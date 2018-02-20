@@ -1,0 +1,38 @@
+---
+
+- name: Configure local machine with ruby
+  hosts: local
+
+  roles:
+    - role: rvm_io.rvm1-ruby
+      tags: ruby
+      become: yes
+      rvm1_rubies:
+        - 1.9.3
+        - 2.3.0
+      rvm1_user: "wwest"
+      rvm1_install_flags: '--user-install'
+      rvm1_install_path: '/Users/{{ ansible_ssh_user }}/.rvm'
+      rvm1_rvm_version: 'stable'
+      rvm1_autolib_mode: 3       # Use libs, install missing libs
+
+  tasks:
+    - name: Install macports packages
+      become: yes
+      macports: name={{ item }} state=present
+      with_items:
+        - gnupg
+        - ImageMagick
+        - xmlstarlet
+        - myrepos
+#    - name: Install some gems
+#      command: /Users/wwest/.rvm/bin/rvm 2.3.0 do gem install time-lord
+
+# use $RVM $VER do gem which $GEM to check if gem is already installed
+# exits 0 if installed and exits 1 if not found
+
+
+# TODO
+# Unloaded gamed with
+# launchctl unload -w /System/Library/LaunchAgents/com.apple.gamed.plist
+# See: https://github.com/ansible/ansible/pull/20881
