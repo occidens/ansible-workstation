@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Get Cask
+      git:
+        repo: https://github.com/cask/cask.git
+        dest: '/home/wwest/.cask'
+        update: no
+    - name: Get Emacs Confiugration
+      git:
+        repo: https://github.com/occidens/dotemacs.git
+        dest: '/home/wwest/.emacs.d/.git'
+        update: no
+        bare: yes
+    - name: Unbare Emacs Configuration
+      ini_file:
+        dest: '/home/wwest/.emacs.d/.git/config'
+        section: core
+        option: bare
+        value: 'false'
+    - name: Checkout Emacs Configuration
+      shell: git checkout
+      args:
+        chdir: '/home/wwest/.emacs.d'
+        creates: '.git/index'
