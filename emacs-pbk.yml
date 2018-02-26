@@ -13,10 +13,10 @@
         update: no
         bare: yes
     - name: Unbare Emacs Configuration
-      ini_file:
-        dest: '/home/wwest/.emacs.d/.git/config'
-        section: core
-        option: bare
+      git_config:
+        scope: local
+        repo: '/home/wwest/.emacs.d'
+        name: core.bare
         value: 'false'
     - name: Checkout Emacs Configuration
       shell: git checkout
